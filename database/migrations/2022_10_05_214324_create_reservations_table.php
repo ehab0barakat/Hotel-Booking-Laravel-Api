@@ -27,8 +27,8 @@ return new class extends Migration
             $table->date("start_date");
             $table->date("end_date");
 
-
-
+            
+            $table->unsignedBigInteger("price");
             $table->unsignedBigInteger("rooms_number");
             $table->unsignedBigInteger("adults_number");
             $table->unsignedBigInteger("children_number");

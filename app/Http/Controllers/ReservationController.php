@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 class ReservationController extends Controller
 {
 
+  
 
     public function total_valid_rooms_in_hotel($req)
     {
@@ -93,6 +94,20 @@ class ReservationController extends Controller
         }
     }
 
+    public function price($req){
+        $user_discount= Guest::where("id",$req->user_id )
+                             ->where("phone",$req->phone)
+                             ->first()->discount;
+
+        $number_of_rooms = $req->rooms;
+        $room_price = RoomCategory::find($req->room_category)->first()->price ;
+
+        $dis = $user_discount == 0 ? 1 : .05 ;
+
+        return $final_price = $room_price * $number_of_rooms * $dis ;
+
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -124,6 +139,9 @@ class ReservationController extends Controller
 
             if ($check1 && $check2 && $check3 && $check4) {
 
+
+                $price = $this->price($request);
+
                 Reservation::create([
                     "guest_id" => $request->user_id,
                     "hotel_id" => $request->location,
@@ -133,8 +151,10 @@ class ReservationController extends Controller
                     "rooms_number" => $request->rooms,
                     "adults_number" => $request->adults,
                     "children_number" => $request->children,
+                    "price" => $price,
                     "status" => "booked"
                 ]);
+
 
                 $this->update_guest($request);
 

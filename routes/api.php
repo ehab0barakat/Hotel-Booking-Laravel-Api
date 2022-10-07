@@ -23,12 +23,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 route::get("hotel","App\Http\Controllers\HotelController@index");
+
 route::get("room_cats","App\Http\Controllers\RoomCategoryController@index");
+
 route::post("book","App\Http\Controllers\ReservationController@store");
+
+route::post("bo","App\Http\Controllers\ReservationController@price");
 
 route::post("show","App\Http\Controllers\HotelController@show");
 
-
 route::post("guest","App\Http\Controllers\GuestController@store");
 
+route::post("login","App\Http\Controllers\Auth\AuthController@login");
+
+route::get("admin-data","App\Http\Controllers\RoomController@index");
 

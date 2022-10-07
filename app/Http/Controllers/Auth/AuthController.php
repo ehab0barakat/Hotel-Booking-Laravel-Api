@@ -18,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:sanctum', ['except' => ['login' , "signup"]]);
+        $this->middleware('auth:sanctum', ['except' => ['login']]);
     }
 
     /**
@@ -33,22 +33,9 @@ class AuthController extends Controller
         if (!$token = Auth::attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+
         return ["token" => request()->user()->createToken("api")->plainTextToken];
     }
-
-
-    public function signup(Request $request)
-    {
-        User::create([
-            "name" => $request->ParentName ,
-            "email" => $request->email ,
-            "password" => Hash::make($request->password),
-        ])->save();
-
-        return [ "message" =>"redirecting to homepage :) "] ;
-        
-    }
-
 
 
     /**

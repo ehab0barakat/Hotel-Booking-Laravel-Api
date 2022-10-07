@@ -4,9 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Room;
 use Illuminate\Http\Request;
+use App\Models\Reservation;
 
 class RoomController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +24,20 @@ class RoomController extends Controller
      */
     public function index()
     {
-        //
+        $x =  Reservation::with("guest")->with("hotel")->with("roomCat")->get();
+
+        return $x ;
+        return
+                [
+                    "hotel" => $x->hotel->location . "Hotel",
+                    "room-type" => $x->room_cat->name,
+                    "room-image" => $x->room_cat->image,
+                    "room-quantity" => $x->room_number,
+                    "adult-quantity" => $x->adult_number,
+                    "price" => $x->price,
+                    "guest_name" => $x->guest->name,
+                    "guest_phone" => $x->guest->phone,
+                ];
     }
 
     /**
